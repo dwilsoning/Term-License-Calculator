@@ -413,6 +413,11 @@ header h1 {
     border-top: 3px solid var(--primary-hover);
 }
 
+.grand-total-row .negative {
+    color: white !important;
+    font-weight: 700;
+}
+
 /* Special Cell Styles */
 .negative {
     color: var(--negative-color);
