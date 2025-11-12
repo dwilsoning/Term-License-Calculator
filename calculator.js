@@ -270,14 +270,20 @@ class RevenueCalculator {
                     <tr class="year-header">
                         <td colspan="5"><strong>Year ${row.year}</strong></td>
                     </tr>
-                    <tr class="year-column-header">
-                        <td>Month</td>
-                        <td>Ratable Service Revenue (Maint + License)</td>
-                        <td>Upfront Term License Revenue</td>
-                        <td>Monthly Reversal of Upfront License</td>
-                        <td>Total Net Recognized Revenue</td>
-                    </tr>
                 `;
+
+                // Add column headers for Year 2 onwards (Year 1 already has headers at top)
+                if (row.year > 1) {
+                    html += `
+                        <tr class="year-column-header">
+                            <td>Month</td>
+                            <td>Ratable Service Revenue (Maint + License)</td>
+                            <td>Upfront Term License Revenue</td>
+                            <td>Monthly Reversal of Upfront License</td>
+                            <td>Total Net Recognized Revenue</td>
+                        </tr>
+                    `;
+                }
             }
 
             // Add data row
