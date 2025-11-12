@@ -37,17 +37,93 @@ class RevenueCalculator {
                 <h3>Year ${i}</h3>
                 <div class="input-row">
                     <div class="form-group">
-                        <label for="license-${i}">Term License Value ($):</label>
+                        <label for="currency-${i}">Currency:</label>
+                        <select id="currency-${i}" class="currency-select">
+                            <option value="USD">USD - US Dollar</option>
+                            <option value="EUR">EUR - Euro</option>
+                            <option value="GBP">GBP - British Pound</option>
+                            <option value="CAD">CAD - Canadian Dollar</option>
+                            <option value="AUD">AUD - Australian Dollar</option>
+                            <option value="JPY">JPY - Japanese Yen</option>
+                            <option value="CHF">CHF - Swiss Franc</option>
+                            <option value="CNY">CNY - Chinese Yuan</option>
+                            <option value="INR">INR - Indian Rupee</option>
+                            <option value="MXN">MXN - Mexican Peso</option>
+                            <option value="BRL">BRL - Brazilian Real</option>
+                            <option value="ZAR">ZAR - South African Rand</option>
+                            <option value="SGD">SGD - Singapore Dollar</option>
+                            <option value="NZD">NZD - New Zealand Dollar</option>
+                            <option value="SEK">SEK - Swedish Krona</option>
+                            <option value="NOK">NOK - Norwegian Krone</option>
+                            <option value="DKK">DKK - Danish Krone</option>
+                        </select>
+                    </div>
+                    <div class="form-group" id="exchange-rate-group-${i}" style="display: none;">
+                        <label for="exchange-rate-${i}">Exchange Rate to USD:</label>
+                        <input type="number" id="exchange-rate-${i}" step="0.000001" min="0" placeholder="1.0">
+                        <small>1 <span id="currency-code-${i}">XXX</span> = ? USD</small>
+                    </div>
+                </div>
+                <div class="input-row">
+                    <div class="form-group">
+                        <label for="license-${i}">Term License Value:</label>
                         <input type="number" id="license-${i}" step="0.01" min="0" placeholder="43086.04" required>
                     </div>
                     <div class="form-group">
-                        <label for="maintenance-${i}">Maintenance Value ($):</label>
+                        <label for="maintenance-${i}">Maintenance Value:</label>
                         <input type="number" id="maintenance-${i}" step="0.01" min="0" placeholder="147579.90" required>
                     </div>
                 </div>
+                <div class="converted-values" id="converted-${i}" style="display: none;">
+                    <p><strong>USD Equivalent:</strong> License: <span id="license-usd-${i}">$0.00</span> | Maintenance: <span id="maintenance-usd-${i}">$0.00</span></p>
+                </div>
             `;
             container.appendChild(yearDiv);
+
+            // Add event listeners for currency changes
+            this.setupCurrencyListeners(i);
         }
+    }
+
+    setupCurrencyListeners(yearIndex) {
+        const currencySelect = document.getElementById(`currency-${yearIndex}`);
+        const exchangeRateGroup = document.getElementById(`exchange-rate-group-${yearIndex}`);
+        const exchangeRateInput = document.getElementById(`exchange-rate-${yearIndex}`);
+        const currencyCodeSpan = document.getElementById(`currency-code-${yearIndex}`);
+        const licenseInput = document.getElementById(`license-${yearIndex}`);
+        const maintenanceInput = document.getElementById(`maintenance-${yearIndex}`);
+        const convertedDiv = document.getElementById(`converted-${yearIndex}`);
+        const licenseUsdSpan = document.getElementById(`license-usd-${yearIndex}`);
+        const maintenanceUsdSpan = document.getElementById(`maintenance-usd-${yearIndex}`);
+
+        const updateConversion = () => {
+            const currency = currencySelect.value;
+            const isUSD = currency === 'USD';
+
+            exchangeRateGroup.style.display = isUSD ? 'none' : 'block';
+            currencyCodeSpan.textContent = currency;
+
+            if (!isUSD) {
+                const rate = parseFloat(exchangeRateInput.value) || 0;
+                const license = parseFloat(licenseInput.value) || 0;
+                const maintenance = parseFloat(maintenanceInput.value) || 0;
+
+                if (rate > 0 && (license > 0 || maintenance > 0)) {
+                    convertedDiv.style.display = 'block';
+                    licenseUsdSpan.textContent = this.formatCurrency(license * rate);
+                    maintenanceUsdSpan.textContent = this.formatCurrency(maintenance * rate);
+                } else {
+                    convertedDiv.style.display = 'none';
+                }
+            } else {
+                convertedDiv.style.display = 'none';
+            }
+        };
+
+        currencySelect.addEventListener('change', updateConversion);
+        exchangeRateInput.addEventListener('input', updateConversion);
+        licenseInput.addEventListener('input', updateConversion);
+        maintenanceInput.addEventListener('input', updateConversion);
     }
 
     collectInputData() {
@@ -55,6 +131,7 @@ class RevenueCalculator {
         const data = [];
 
         for (let i = 1; i <= years; i++) {
+            const currency = document.getElementById(`currency-${i}`).value;
             const license = parseFloat(document.getElementById(`license-${i}`).value);
             const maintenance = parseFloat(document.getElementById(`maintenance-${i}`).value);
 
@@ -63,10 +140,30 @@ class RevenueCalculator {
                 return null;
             }
 
+            let exchangeRate = 1.0; // Default for USD
+            let licenseUSD = license;
+            let maintenanceUSD = maintenance;
+
+            if (currency !== 'USD') {
+                exchangeRate = parseFloat(document.getElementById(`exchange-rate-${i}`).value);
+
+                if (isNaN(exchangeRate) || exchangeRate <= 0) {
+                    alert(`Please enter a valid exchange rate for Year ${i} (${currency} to USD)`);
+                    return null;
+                }
+
+                licenseUSD = license * exchangeRate;
+                maintenanceUSD = maintenance * exchangeRate;
+            }
+
             data.push({
                 year: i,
-                license: license,
-                maintenance: maintenance
+                currency: currency,
+                exchangeRate: exchangeRate,
+                licenseOriginal: license,
+                maintenanceOriginal: maintenance,
+                license: licenseUSD,
+                maintenance: maintenanceUSD
             });
         }
 
@@ -129,17 +226,39 @@ class RevenueCalculator {
         const resultsSection = document.getElementById('resultsSection');
         const tableContainer = document.getElementById('tableContainer');
 
-        let html = '<table class="revenue-table">';
+        // Add currency summary section
+        let html = '<div class="currency-summary">';
+        html += '<h3>Currency Conversion Summary</h3>';
+        html += '<table class="summary-table"><thead><tr><th>Year</th><th>Currency</th><th>License (Original)</th><th>Maintenance (Original)</th><th>Exchange Rate</th><th>License (USD)</th><th>Maintenance (USD)</th></tr></thead><tbody>';
+
+        this.contractData.forEach(yearData => {
+            const currencySymbol = yearData.currency === 'USD' ? '$' : '';
+            html += `
+                <tr>
+                    <td>Year ${yearData.year}</td>
+                    <td><strong>${yearData.currency}</strong></td>
+                    <td>${this.formatValue(yearData.licenseOriginal, yearData.currency)}</td>
+                    <td>${this.formatValue(yearData.maintenanceOriginal, yearData.currency)}</td>
+                    <td>${yearData.currency === 'USD' ? 'N/A' : yearData.exchangeRate.toFixed(6)}</td>
+                    <td>${this.formatCurrency(yearData.license)}</td>
+                    <td>${this.formatCurrency(yearData.maintenance)}</td>
+                </tr>
+            `;
+        });
+
+        html += '</tbody></table></div>';
+
+        html += '<table class="revenue-table">';
 
         // Table header
         html += `
             <thead>
                 <tr>
                     <th>Month</th>
-                    <th>Ratable Service Revenue<br>(Maint + License)</th>
-                    <th>Upfront Term License<br>Revenue</th>
-                    <th>Monthly Reversal of<br>Upfront License</th>
-                    <th>Total Net Recognized<br>Revenue</th>
+                    <th>Ratable Service Revenue<br>(Maint + License)<br><span class="currency-label">USD</span></th>
+                    <th>Upfront Term License<br>Revenue<br><span class="currency-label">USD</span></th>
+                    <th>Monthly Reversal of<br>Upfront License<br><span class="currency-label">USD</span></th>
+                    <th>Total Net Recognized<br>Revenue<br><span class="currency-label">USD</span></th>
                 </tr>
             </thead>
             <tbody>
@@ -254,13 +373,37 @@ class RevenueCalculator {
         }).format(value);
     }
 
+    formatValue(value, currency) {
+        try {
+            return new Intl.NumberFormat('en-US', {
+                style: 'currency',
+                currency: currency,
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 2
+            }).format(value);
+        } catch (e) {
+            // Fallback if currency formatting fails
+            return `${value.toFixed(2)} ${currency}`;
+        }
+    }
+
     setupExport(schedule) {
         const exportBtn = document.getElementById('exportBtn');
         exportBtn.onclick = () => this.exportToCSV(schedule);
     }
 
     exportToCSV(schedule) {
-        let csv = 'Month,Ratable Service Revenue (Maint + License),Upfront Term License Revenue,Monthly Reversal of Upfront License,Total Net Recognized Revenue\n';
+        // Add currency summary header
+        let csv = 'Term License Revenue Recognition Schedule - All values in USD\n\n';
+        csv += 'Currency Conversion Summary\n';
+        csv += 'Year,Currency,License (Original),Maintenance (Original),Exchange Rate,License (USD),Maintenance (USD)\n';
+
+        this.contractData.forEach(yearData => {
+            csv += `Year ${yearData.year},${yearData.currency},${yearData.licenseOriginal.toFixed(2)},${yearData.maintenanceOriginal.toFixed(2)},${yearData.currency === 'USD' ? 'N/A' : yearData.exchangeRate.toFixed(6)},${yearData.license.toFixed(2)},${yearData.maintenance.toFixed(2)}\n`;
+        });
+
+        csv += '\n\nRevenue Recognition Schedule (USD)\n';
+        csv += 'Month,Ratable Service Revenue (Maint + License),Upfront Term License Revenue,Monthly Reversal of Upfront License,Total Net Recognized Revenue\n';
 
         let currentYear = 0;
         let yearTotals = { ratable: 0, upfront: 0, reversal: 0, total: 0 };

@@ -21,17 +21,27 @@ This calculator implements complex revenue recognition logic for term license ag
 ### Entering Contract Data
 
 1. **Set Contract Duration**: Enter the total number of years (1-10)
-2. **Enter Annual Values**: For each year, provide:
-   - **Term License Value**: The license amount for that year
-   - **Maintenance Value**: The maintenance amount for that year
 
-Example values:
-- Year 1: License = $43,086.04, Maintenance = $147,579.90
-- Year 2: License = $44,378.62, Maintenance = $152,006.90
-- Year 3: License = $45,710.18, Maintenance = $156,567.10
+2. **For Each Year, Provide:**
+   - **Currency**: Select the currency used for contract values (USD, EUR, GBP, etc.)
+   - **Exchange Rate** (if not USD): Enter the exchange rate to convert to USD
+     - Format: 1 [Selected Currency] = ? USD
+     - Example: For EUR at rate 1.10, enter 1.10 (meaning 1 EUR = 1.10 USD)
+   - **Term License Value**: The license amount in the selected currency
+   - **Maintenance Value**: The maintenance amount in the selected currency
 
-3. **Calculate**: Click "Calculate Revenue Schedule" to generate the table
-4. **Export**: Click "Export to CSV" to download the results
+**Example with Multiple Currencies:**
+- Year 1 (USD): License = $43,086.04, Maintenance = $147,579.90
+- Year 2 (EUR): License = €40,000.00, Maintenance = €138,000.00, Rate = 1.10
+- Year 3 (GBP): License = £35,000.00, Maintenance = £120,000.00, Rate = 1.27
+
+3. **Review Conversions**: The app will display USD equivalents as you enter values
+
+4. **Calculate**: Click "Calculate Revenue Schedule" to generate the table
+
+5. **Review Currency Summary**: Check the conversion summary table at the top of results
+
+6. **Export**: Click "Export to CSV" to download the complete results with currency information
 
 ## Revenue Recognition Logic
 
@@ -98,13 +108,20 @@ For a 3-year contract with:
 
 ## Features
 
-- ✅ Dynamic form generation based on contract years
-- ✅ Real-time calculation and validation
-- ✅ Professional table formatting with subtotals
-- ✅ CSV export functionality
-- ✅ Responsive design (works on tablets and mobile)
-- ✅ Print-friendly formatting
-- ✅ Clean, modern interface
+- ✅ **Multi-Currency Support**: Enter contract values in 17+ currencies
+- ✅ **Automatic USD Conversion**: All calculations displayed in USD
+- ✅ **Real-Time Exchange Rate Conversion**: See USD equivalents as you type
+- ✅ **Currency Summary Table**: Clear breakdown of all conversions
+- ✅ **Dynamic Form Generation**: Adjusts based on contract years
+- ✅ **Professional Table Formatting**: Year subtotals and grand totals
+- ✅ **CSV Export**: Includes currency conversion details
+- ✅ **Responsive Design**: Works on desktop, tablet, and mobile
+- ✅ **Print-Friendly Formatting**: Clean output for documentation
+- ✅ **Clean, Modern Interface**: Professional appearance
+
+### Supported Currencies
+
+USD, EUR, GBP, CAD, AUD, JPY, CHF, CNY, INR, MXN, BRL, ZAR, SGD, NZD, SEK, NOK, DKK
 
 ## Technical Details
 
@@ -113,10 +130,45 @@ For a 3-year contract with:
 - **No data transmission**: Your contract data stays on your computer
 - **Cross-platform**: Works on Windows, Mac, and Linux
 
+## Multi-Currency Usage Guide
+
+### How Exchange Rates Work
+
+The exchange rate field expects the conversion rate FROM your selected currency TO USD.
+
+**Format**: 1 [Your Currency] = X USD
+
+**Examples:**
+- **EUR to USD** at rate 1.10: Enter `1.10` (1 EUR = 1.10 USD)
+- **GBP to USD** at rate 1.27: Enter `1.27` (1 GBP = 1.27 USD)
+- **JPY to USD** at rate 0.0067: Enter `0.0067` (1 JPY = 0.0067 USD)
+
+### Finding Current Exchange Rates
+
+You can find current exchange rates from:
+- Your bank or financial institution
+- Currency conversion websites (XE.com, Google Finance, etc.)
+- Your company's finance department for official rates
+
+### Best Practices
+
+1. **Use Consistent Rates**: If using historical rates, ensure they match the contract date
+2. **Document Your Rates**: Keep a record of exchange rates used for audit purposes
+3. **Check Conversions**: Review the USD Equivalent display before calculating
+4. **Export for Records**: Always export to CSV to maintain a permanent record
+
 ## Troubleshooting
 
 **Issue**: Calculator button doesn't work
 - **Solution**: Ensure all year values are filled in with valid numbers
+- **Solution**: Check that exchange rates are entered for non-USD currencies
+
+**Issue**: Exchange rate field not showing
+- **Solution**: Make sure you've selected a currency other than USD
+
+**Issue**: USD conversion looks wrong
+- **Solution**: Verify your exchange rate is correct (1 XXX = ? USD format)
+- **Solution**: Check that you haven't accidentally inverted the rate
 
 **Issue**: Export doesn't download
 - **Solution**: Check your browser's download settings and pop-up blocker
@@ -140,6 +192,9 @@ For questions or issues with the calculation logic, please refer to the revenue 
 
 ## Version
 
-Current Version: 1.1.0
+Current Version: 2.0.0
 Created: 2025-11-12
-Updated: 2025-11-12 - Fixed reversal calculation to amortize over entire contract duration
+Updated: 2025-11-12
+- v1.0.0: Initial release
+- v1.1.0: Fixed reversal calculation to amortize over entire contract duration
+- v2.0.0: Added multi-currency support with automatic USD conversion

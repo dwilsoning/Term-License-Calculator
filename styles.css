@@ -63,6 +63,19 @@ header h1 {
     margin-bottom: 2rem;
 }
 
+.currency-info-box {
+    background: #eff6ff;
+    border: 2px solid #2563eb;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.currency-info-box p {
+    margin: 0;
+    color: var(--text-primary);
+}
+
 .input-section h2 {
     font-size: 1.75rem;
     margin-bottom: 1.5rem;
@@ -166,6 +179,45 @@ header h1 {
     box-shadow: var(--shadow-lg);
 }
 
+/* Currency Input Styles */
+.currency-select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.currency-select:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.form-group small {
+    display: block;
+    margin-top: 0.25rem;
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+}
+
+.converted-values {
+    background: #f0fdf4;
+    border: 1px solid #16a34a;
+    border-radius: 6px;
+    padding: 0.75rem;
+    margin-top: 1rem;
+}
+
+.converted-values p {
+    margin: 0;
+    color: var(--text-primary);
+    font-size: 0.95rem;
+}
+
 /* Results Section */
 .results-section {
     background: var(--surface);
@@ -173,6 +225,52 @@ header h1 {
     padding: 2rem;
     box-shadow: var(--shadow-lg);
     margin-top: 2rem;
+}
+
+/* Currency Summary */
+.currency-summary {
+    background: #fefce8;
+    border: 2px solid #eab308;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.currency-summary h3 {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: var(--text-primary);
+    font-size: 1.25rem;
+}
+
+.summary-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    border-radius: 6px;
+    overflow: hidden;
+    font-size: 0.9rem;
+}
+
+.summary-table th,
+.summary-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+}
+
+.summary-table thead {
+    background: #fbbf24;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.summary-table tbody tr:hover {
+    background: #fffbeb;
+}
+
+.summary-table tbody tr:last-child td {
+    border-bottom: none;
 }
 
 .results-header {
@@ -275,6 +373,17 @@ header h1 {
 .total-cell {
     font-weight: 600;
     background: #f8fafc;
+}
+
+.currency-label {
+    display: inline-block;
+    background: #16a34a;
+    color: white;
+    padding: 0.15rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-top: 0.25rem;
 }
 
 /* Responsive Design */
