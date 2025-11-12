@@ -1,14 +1,15 @@
 /* Term License Revenue Calculator Styles */
 
 :root {
-    --primary-color: #2563eb;
-    --primary-hover: #1d4ed8;
-    --secondary-color: #64748b;
-    --success-color: #16a34a;
+    --primary-color: #0076A2;
+    --primary-hover: #005580;
+    --secondary-color: #707CF1;
+    --success-color: #00BBBA;
+    --accent-color: #151744;
     --background: #f8fafc;
     --surface: #ffffff;
     --border: #e2e8f0;
-    --text-primary: #0f172a;
+    --text-primary: #151744;
     --text-secondary: #475569;
     --negative-color: #dc2626;
     --shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
@@ -40,9 +41,21 @@ header {
     margin-bottom: 3rem;
 }
 
+.logo-container {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo {
+    height: 60px;
+    width: auto;
+}
+
 header h1 {
     font-size: 2.5rem;
-    color: var(--text-primary);
+    color: var(--primary-color);
     margin-bottom: 0.5rem;
     font-weight: 700;
 }
@@ -64,8 +77,8 @@ header h1 {
 }
 
 .currency-info-box {
-    background: #eff6ff;
-    border: 2px solid #2563eb;
+    background: #e6f7f7;
+    border: 2px solid var(--success-color);
     border-radius: 8px;
     padding: 1rem;
     margin-bottom: 1.5rem;
@@ -188,7 +201,7 @@ header h1 {
 }
 
 .btn-export:hover {
-    background: #15803d;
+    background: #009999;
     transform: translateY(-1px);
     box-shadow: var(--shadow-lg);
 }
@@ -243,8 +256,8 @@ header h1 {
 
 /* Currency Summary */
 .currency-summary {
-    background: #fefce8;
-    border: 2px solid #eab308;
+    background: #f0f4ff;
+    border: 2px solid var(--secondary-color);
     border-radius: 8px;
     padding: 1.5rem;
     margin-bottom: 2rem;
@@ -274,13 +287,13 @@ header h1 {
 }
 
 .summary-table thead {
-    background: #fbbf24;
-    color: var(--text-primary);
+    background: var(--secondary-color);
+    color: white;
     font-weight: 600;
 }
 
 .summary-table tbody tr:hover {
-    background: #fffbeb;
+    background: #e6f0ff;
 }
 
 .summary-table tbody tr:last-child td {
@@ -391,7 +404,7 @@ header h1 {
 
 .currency-label {
     display: inline-block;
-    background: #16a34a;
+    background: var(--success-color);
     color: white;
     padding: 0.15rem 0.5rem;
     border-radius: 4px;
