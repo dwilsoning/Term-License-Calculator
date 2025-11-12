@@ -9,13 +9,20 @@ class RevenueCalculator {
 
     init() {
         this.setupEventListeners();
-        this.generateYearInputs(3); // Default 3 years
         this.setupGlobalCurrencyListeners();
+        // Don't generate year inputs until user enters a value
     }
 
     setupEventListeners() {
-        document.getElementById('contractYears').addEventListener('change', (e) => {
-            this.generateYearInputs(parseInt(e.target.value));
+        const yearsInput = document.getElementById('contractYears');
+
+        yearsInput.addEventListener('input', (e) => {
+            const years = parseInt(e.target.value);
+            if (years && years >= 1 && years <= 10) {
+                this.generateYearInputs(years);
+            } else if (!e.target.value) {
+                document.getElementById('yearInputs').innerHTML = '';
+            }
         });
 
         document.getElementById('calculateBtn').addEventListener('click', () => {
