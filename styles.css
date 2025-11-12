@@ -371,12 +371,21 @@ header h1 {
 
 /* Year Header Row */
 .year-header td {
-    background: var(--background);
+    background: var(--secondary-color);
     font-size: 1.1rem;
     padding: 1rem;
-    color: var(--primary-color);
-    border-top: 2px solid var(--border);
-    border-bottom: 2px solid var(--border);
+    color: white;
+    border-top: 2px solid var(--secondary-color);
+    border-bottom: 2px solid var(--secondary-color);
+}
+
+/* Year Column Headers */
+.year-column-header {
+    background: var(--accent-color) !important;
+    color: white !important;
+    font-weight: 600;
+    font-size: 0.9rem;
+    padding: 0.75rem 1rem !important;
 }
 
 /* Subtotal Row */
