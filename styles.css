@@ -122,10 +122,24 @@ header h1 {
     color: var(--primary-color);
 }
 
+.contract-settings {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+    padding-bottom: 2rem;
+    border-bottom: 2px solid var(--border);
+}
+
 .input-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1.5rem;
+}
+
+.integer-input {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
 }
 
 /* Button Styles */
