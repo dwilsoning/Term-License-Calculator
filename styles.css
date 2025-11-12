@@ -416,7 +416,7 @@ header h1 {
 /* Special Cell Styles */
 .negative {
     color: var(--negative-color);
-    font-weight: 500;
+    font-weight: 700;
 }
 
 .total-cell {

@@ -256,7 +256,7 @@ class RevenueCalculator {
                             <td><strong>Year ${currentYear} Subtotal</strong></td>
                             <td>${this.formatCurrency(yearTotals.ratable)}</td>
                             <td>${this.formatCurrency(yearTotals.upfront)}</td>
-                            <td>${this.formatCurrency(yearTotals.reversal)}</td>
+                            <td class="negative">${this.formatCurrency(yearTotals.reversal)}</td>
                             <td>${this.formatCurrency(yearTotals.total)}</td>
                         </tr>
                     `;
@@ -315,7 +315,7 @@ class RevenueCalculator {
                 <td><strong>Year ${currentYear} Subtotal</strong></td>
                 <td>${this.formatCurrency(yearTotals.ratable)}</td>
                 <td>${this.formatCurrency(yearTotals.upfront)}</td>
-                <td>${this.formatCurrency(yearTotals.reversal)}</td>
+                <td class="negative">${this.formatCurrency(yearTotals.reversal)}</td>
                 <td>${this.formatCurrency(yearTotals.total)}</td>
             </tr>
         `;
@@ -326,7 +326,7 @@ class RevenueCalculator {
                 <td><strong>Total</strong></td>
                 <td>${this.formatCurrency(grandTotals.ratable)}</td>
                 <td>${this.formatCurrency(grandTotals.upfront)}</td>
-                <td>${this.formatCurrency(grandTotals.reversal)}</td>
+                <td class="negative">${this.formatCurrency(grandTotals.reversal)}</td>
                 <td>${this.formatCurrency(grandTotals.total)}</td>
             </tr>
         `;
@@ -345,12 +345,15 @@ class RevenueCalculator {
 
     formatCurrency(value) {
         const rounded = Math.round(value);
-        return new Intl.NumberFormat('en-US', {
+        const formatted = new Intl.NumberFormat('en-US', {
             style: 'currency',
             currency: 'USD',
             minimumFractionDigits: 0,
             maximumFractionDigits: 0
-        }).format(rounded);
+        }).format(Math.abs(rounded));
+
+        // Return with brackets for negative values
+        return rounded < 0 ? `(${formatted})` : formatted;
     }
 
     formatValue(value, currency) {
