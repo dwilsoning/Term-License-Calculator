@@ -61,11 +61,11 @@ class RevenueCalculator {
                 <div class="input-row">
                     <div class="form-group">
                         <label for="license-${i}">Term License Value:</label>
-                        <input type="text" id="license-${i}" class="integer-input" placeholder="43,086" required>
+                        <input type="text" id="license-${i}" class="integer-input" placeholder="e.g., 43,086" required>
                     </div>
                     <div class="form-group">
                         <label for="maintenance-${i}">Maintenance Value:</label>
-                        <input type="text" id="maintenance-${i}" class="integer-input" placeholder="147,580" required>
+                        <input type="text" id="maintenance-${i}" class="integer-input" placeholder="e.g., 147,580" required>
                     </div>
                 </div>
             `;
