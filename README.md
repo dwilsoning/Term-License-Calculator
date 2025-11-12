@@ -37,16 +37,18 @@ Example values:
 
 ### 1. Ratable Service Revenue (Maint + License)
 - Formula: `(Annual License + Annual Maintenance) / 12`
-- Recognized: Every month evenly throughout the year
+- Recognized: Every month evenly throughout each year
 
 ### 2. Upfront Term License Revenue
-- Formula: `Annual License Value`
-- Recognized: Only in Month 1, 13, 25, etc. (first month of each year)
+- Formula: `Sum of ALL Term License Values for entire contract`
+- Recognized: **Only in Month 1 of the entire contract** (not each year)
+- Example: For a 3-year contract, all 3 years' license values are booked upfront in Month 1
 
 ### 3. Monthly Reversal of Upfront License
-- Formula: `-(Annual License Value / 12)`
-- Recognized: Every month as a negative amount (reversal)
-- Purpose: Prevents double-counting the license revenue
+- Formula: `-(Total License Value / Total Contract Months)`
+- Recognized: Every month throughout the **entire contract duration**
+- Purpose: Amortizes the upfront license booking evenly over the full contract term
+- Example: For a 3-year contract with total license value of $133,174.84, reversal is -$3,699.30 per month for all 36 months
 
 ### 4. Total Net Recognized Revenue
 - Formula: `Ratable Service + Upfront License + Monthly Reversal`
@@ -63,19 +65,36 @@ The generated table includes:
 
 ### Example Calculation
 
-For Year 1 with License = $43,086.04 and Maintenance = $147,579.90:
+For a 3-year contract with:
+- Year 1: License = $43,086.04, Maintenance = $147,579.90
+- Year 2: License = $44,378.62, Maintenance = $152,006.90
+- Year 3: License = $45,710.18, Maintenance = $156,567.10
+- **Total License Value = $133,174.84**
+- **Monthly Reversal = -$3,699.30 (across all 36 months)**
 
-**Month 1:**
+**Month 1 (Year 1):**
 - Ratable Service: ($43,086.04 + $147,579.90) / 12 = $15,888.83
-- Upfront License: $43,086.04
-- Monthly Reversal: -$3,590.50
-- **Total Net Revenue: $55,384.37**
+- Upfront License: $133,174.84 (entire contract)
+- Monthly Reversal: -$3,699.30
+- **Total Net Revenue: $145,364.37**
 
-**Months 2-12:**
+**Months 2-12 (Year 1):**
 - Ratable Service: $15,888.83
 - Upfront License: $0.00
-- Monthly Reversal: -$3,590.50
-- **Total Net Revenue: $12,298.33**
+- Monthly Reversal: -$3,699.30
+- **Total Net Revenue: $12,189.53**
+
+**Months 13-24 (Year 2):**
+- Ratable Service: ($44,378.62 + $152,006.90) / 12 = $16,365.46
+- Upfront License: $0.00
+- Monthly Reversal: -$3,699.30
+- **Total Net Revenue: $12,666.16**
+
+**Months 25-36 (Year 3):**
+- Ratable Service: ($45,710.18 + $156,567.10) / 12 = $16,856.44
+- Upfront License: $0.00
+- Monthly Reversal: -$3,699.30
+- **Total Net Revenue: $13,157.14**
 
 ## Features
 
@@ -121,5 +140,6 @@ For questions or issues with the calculation logic, please refer to the revenue 
 
 ## Version
 
-Current Version: 1.0.0
+Current Version: 1.1.0
 Created: 2025-11-12
+Updated: 2025-11-12 - Fixed reversal calculation to amortize over entire contract duration

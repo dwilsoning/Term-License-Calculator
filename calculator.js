@@ -86,20 +86,24 @@ class RevenueCalculator {
         const schedule = [];
         let monthCounter = 1;
 
+        // Calculate total contract months and total license value upfront
+        const totalMonths = contractData.length * 12;
+        const totalLicenseValue = contractData.reduce((sum, year) => sum + year.license, 0);
+
+        // Calculate monthly reversal across entire contract duration
+        const monthlyReversal = -(totalLicenseValue / totalMonths);
+
         contractData.forEach(yearData => {
             const { year, license, maintenance } = yearData;
 
             // Calculate monthly ratable service revenue (Maintenance + License) / 12
             const monthlyRatableRevenue = (license + maintenance) / 12;
 
-            // Calculate monthly reversal (negative value to offset upfront booking)
-            const monthlyReversal = -(license / 12);
-
             for (let month = 1; month <= 12; month++) {
-                const isFirstMonthOfYear = month === 1;
+                const isFirstMonthOfContract = monthCounter === 1;
 
-                // Upfront license revenue only in first month of year
-                const upfrontLicense = isFirstMonthOfYear ? license : 0;
+                // Upfront license revenue only in first month of entire contract
+                const upfrontLicense = isFirstMonthOfContract ? totalLicenseValue : 0;
 
                 // Calculate total net recognized revenue
                 const totalNetRevenue = monthlyRatableRevenue + upfrontLicense + monthlyReversal;
